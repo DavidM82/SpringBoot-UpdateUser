@@ -43,6 +43,20 @@ public class UserService {
     	return(foundUser.get());
     }
     
+    public boolean authUser(String name, String password) {
+    	Optional<User> foundUser = Optional.ofNullable(userRepository.findByName(name));
+    	if (foundUser.isEmpty()) {
+    	
+    		return false;
+    	}
+    	if (!foundUser.get().getPassword().equals(password)) {
+    		return false;
+    	}
+    	
+    	
+    	return true;
+    }
+    
     public void UpdateUser(User usertoUpdate) {
     	userRepository.save(usertoUpdate);
     }
