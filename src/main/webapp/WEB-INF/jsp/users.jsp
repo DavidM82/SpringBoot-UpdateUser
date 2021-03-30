@@ -19,7 +19,7 @@ table, th, td {
         <td>${user.name}</td>
         <td>${user.email}</td>
         <td>${user.password}</td>
-        <td><a href="/update/${user.id}">Edit</a></td>
+        <td><a href="/updateuser/${user.id}">Edit</a></td>
     </tr>
   </c:forEach>
 </table>

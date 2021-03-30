@@ -22,7 +22,7 @@ public class UpdateUser {
 	
     Logger logger = LoggerFactory.getLogger(UserController.class);
     
-    @GetMapping(value = "/update/{userId}")
+    @GetMapping(value = "/updateuser/{userId}")
     public String getUser(@PathVariable("userId") int id, ModelMap model) {
     	
     	logger.info("Getting User: " + id);
@@ -30,10 +30,10 @@ public class UpdateUser {
     	logger.info("Putting user in view...");
     	model.addAttribute("user", user);
     	
-    	return "update";
+    	return "updateuser";
     }
     
-    @PostMapping(value = "/update")
+    @PostMapping(value = "/updateuser")
     public String saveUser(ModelMap model, @RequestParam(value = "id") int id, @RequestParam(value = "name") String name, @RequestParam(value = "email") String email, @RequestParam(value = "password") String password) {
     	logger.info("Getting user information from form." + id );
     	    	

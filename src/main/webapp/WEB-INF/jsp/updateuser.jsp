@@ -4,7 +4,7 @@
 <form:form method="post" modelAttribute="user" action="/update">
 	<table>
 		<tr>
-			<td><form:hidden path="id" /></td>
+			<td><form:hidden path="userid" /></td>
 		</tr>
 		
 		<tr>

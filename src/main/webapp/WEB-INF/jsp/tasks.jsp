@@ -23,11 +23,15 @@ table, th, td {
         <td>${task.startDate}</td>
         <td>${task.endDate}</td>
         <td>${task.user}</td>
-        <td><a href="/updateTask/${task.taskid}">Edit</a></td>
+        <td><a href="/updatetask/${task.taskid}">Edit</a></td>
     </tr>
   </c:forEach>
+  <tr>
+  	<td colspan="9">
+  		<center><a href="/newtask">Create a new task!</a></center>
+  	</td>
+  </tr>
 </table>
-
 
 </body>
 </html>

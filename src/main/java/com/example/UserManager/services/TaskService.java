@@ -28,4 +28,13 @@ public class TaskService {
 	public Iterable<Task> getAllTasks(){
 		return taskrepository.findAll();
 	}
+	
+	public Task getTaskById(int id) {
+		Optional<Task> foundTask = taskrepository.findById(id);
+		
+		if (foundTask.isPresent()) {
+			return foundTask.get();
+		}
+		return new Task();
+	}
 }
