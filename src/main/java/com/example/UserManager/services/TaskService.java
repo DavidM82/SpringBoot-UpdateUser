@@ -1,5 +1,6 @@
 package com.example.UserManager.services;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,19 @@ public class TaskService {
 			return foundTask.get();
 		}
 		return new Task();
+	}
+	
+	public void updateTask(Task task) {
+		taskrepository.save(task);
+	}
+	
+	public void saveTask(Task task) {
+		Iterable<Task> tasks = taskrepository.findAll();
+		task.setTaskid(((Collection<?>) tasks).size()+1);
+		taskrepository.save(task);
+	}
+	
+	public void deleteTask(int id) {
+		taskrepository.deleteById(id);
 	}
 }

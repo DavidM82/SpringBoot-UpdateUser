@@ -33,6 +33,8 @@ public class Task {
 	@Temporal(TemporalType.DATE)
 	private Date startDate, endDate;
 
+	public Task() {}
+	
 	public Integer getTaskid() {
 		return taskid;
 	}

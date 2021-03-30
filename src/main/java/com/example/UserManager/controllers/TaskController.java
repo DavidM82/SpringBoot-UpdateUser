@@ -1,5 +1,6 @@
 package com.example.UserManager.controllers;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.UserManager.entities.Task;
+import com.example.UserManager.entities.User;
 import com.example.UserManager.services.TaskService;
+import com.example.UserManager.services.UserService;
 
 @Controller
 public class TaskController {
@@ -28,11 +31,20 @@ public class TaskController {
 	@Autowired
 	TaskService taskService;
 	
+	@Autowired
+	UserService userService;
+	
 	@GetMapping(value="/tasks")
 	public String showTasks(ModelMap model) {
-		int userid = 1;
-		logger.info("Getting tasks of User with ID: " + 1 );
-		Iterable<Task> tasks = taskService.getAllTasksById(userid);
+		if (!userService.isLoggedIn()) {
+			logger.info("User isn't logged in. Redirecting to log in page.");
+			return "login";
+		}
+		logger.info("User is logged in, getting log in info");
+		User user = userService.getLogIn();
+		int id = user.getId();
+		logger.info("Getting tasks of User with ID: " + id );
+		Iterable<Task> tasks = taskService.getAllTasksById(id);
 		//Iterable<Task> tasks = taskService.getAllTasks();
 		logger.info("Tasks retrieved. Count: " + ((Collection<?>) tasks).size());
 		model.addAttribute("tasks", tasks);
@@ -57,10 +69,64 @@ public class TaskController {
 		return "updatetask";
 	}
 	
+	@GetMapping(value="/deletetask/{taskid}")
+	public String deleteTask(@PathVariable("taskid") int id) {
+		logger.info("Deleting task id: " + id);
+		taskService.deleteTask(id);
+		return "deleted";
+	}
+	
 	@PostMapping(value="/updatetask")
-	public String updateTask(@RequestParam(value="startString") String startString, @RequestParam(value="endString") String endString) {
+	public String updateTask(@RequestParam(value="startString") String startString, @RequestParam(value="endString") String endString,
+							@RequestParam(value="name") String name, @RequestParam(value="description") String desc,
+							@RequestParam(value="email") String email, @RequestParam(value="severity") int severity,
+							@RequestParam(value="taskid") int id, @RequestParam(value="user") User user) {
 		logger.info("Starting date: " + startString);
 		logger.info("Ending date: " + endString);
+		
+		try {
+			Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(startString);
+			Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(endString);
+			Task task = new Task();
+			task.setTaskid(id); task.setName(name); task.setDescription(desc); task.setEmail(email); task.setSeverity(severity); task.setUser(user); task.setStartDate(startDate); task.setEndDate(endDate);
+			logger.info("Updating task...");
+			taskService.updateTask(task);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "index";
+	}
+	
+	@GetMapping(value="/newtask")
+	public String newTask() {
+		logger.info("Creating a new task...");
+		return "newtask";
+	}
+	
+	@PostMapping(value="/newtask")
+	public String newTask(@RequestParam(value="startString") String startString, @RequestParam(value="endString") String endString,
+						@RequestParam(value="name") String name, @RequestParam(value="desc") String desc, @RequestParam(value="email") String email,
+						@RequestParam(value="severity") int severity) {
+		logger.info("Starting date: " + startString);
+		logger.info("Ending date: " + endString);
+		
+		try {
+			Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(startString);
+			Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(endString);
+			Task task = new Task();
+			task.setName(name); task.setDescription(desc); task.setEmail(email); task.setSeverity(severity);
+			task.setStartDate(startDate); task.setEndDate(endDate);
+			task.setUser(userService.GetUserById(1));
+			logger.info("Saving new Task...");
+			taskService.saveTask(task);
+			logger.info("Task saved.");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return "index";
 	}
 }

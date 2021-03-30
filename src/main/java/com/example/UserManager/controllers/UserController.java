@@ -25,7 +25,13 @@ public class UserController {
 	
 	@GetMapping("/users")
 	public String showUsers(ModelMap model) {
-		
+		if (!userService.isLoggedIn()) {
+			logger.info("User isn't logged in. Redirecting to log in page.");
+			return "login";
+		}
+		logger.info("User is logged in, getting log in info");
+		User user = userService.getLogIn();
+		int id = user.getId();
 		
 		logger.info("Getting all Users");
 		Iterable<User> users = userService.GetAllUsers();

@@ -17,7 +17,8 @@ public class UserService {
 	@Autowired
 	 private UserRepository userRepository;
 	
-	
+	User login;
+	boolean loggedIn;
 
     public Iterable<User> GetAllUsers()
     {
@@ -46,15 +47,28 @@ public class UserService {
     public boolean authUser(String name, String password) {
     	Optional<User> foundUser = Optional.ofNullable(userRepository.findByName(name));
     	if (foundUser.isEmpty()) {
-    	
     		return false;
     	}
     	if (!foundUser.get().getPassword().equals(password)) {
     		return false;
     	}
     	
-    	
-    	return true;
+    	login = foundUser.get();
+    	loggedIn = true;
+    	return loggedIn;
+    }
+    
+    public void logOutUser() {
+    	login = null;
+    	loggedIn = false;
+    }
+    
+    public boolean isLoggedIn() {
+    	return loggedIn;
+    }
+    
+    public User getLogIn() {
+    	return login;
     }
     
     public void UpdateUser(User usertoUpdate) {

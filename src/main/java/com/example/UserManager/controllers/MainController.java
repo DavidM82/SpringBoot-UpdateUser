@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.example.UserManager.entities.User;
 import com.example.UserManager.services.UserService;
 
 @Controller
@@ -37,6 +38,12 @@ public class MainController {
 			 return "success";
 		 }
 		 return "failure";
+	 }
+	 
+	 @GetMapping(value="/logout")
+	 public String logOutUser() {
+		 userservice.logOutUser();
+		 return "index";
 	 }
 }
 
