@@ -31,7 +31,7 @@ public class UserService {
     }
     
     public User GetUserById(int id) {
-    	Optional<User> foundUser = userRepository.findById(id);
+    	Optional<User> foundUser = Optional.ofNullable(userRepository.findByUserid(id));
     	
     	
     	//TODO: we need to decide how to handle a "Not Found" condition

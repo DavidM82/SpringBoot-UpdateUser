@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+    private Integer userid;
 
     private String name;
 
@@ -26,11 +26,11 @@ public class User {
     }
 
     public Integer getId() {
-        return id;
+        return userid;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.userid = id;
     }
 
     public String getName() {
@@ -51,7 +51,7 @@ public class User {
     
     @Override
     public String toString() {
-    	return (id.toString() + " " + name + " " + email + " " + password);
+    	return (userid.toString() + " " + name + " " + email + " " + password);
     }
     
 }
